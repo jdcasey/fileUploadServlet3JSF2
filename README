@@ -1,0 +1,11 @@
+Simple File Upload with JSF2 and Servlet 3.0 (e.g. on Glassfish v3)
+it is based on the posts of BarlusC and little enhanced by me.
+
+You find the corresponding posts here:
+ - http://balusc.blogspot.com/2009/12/uploading-files-with-jsf-20-and-servlet.html 
+ - http://balusc.blogspot.com/2009/12/uploading-files-in-servlet-30.html
+
+
+This code is (C) BalusC and (avery small part) by me, Dominik Dorn. 
+It is licenced under the LGPL, which you can find here:
+http://www.gnu.org/copyleft/lesser.html 
