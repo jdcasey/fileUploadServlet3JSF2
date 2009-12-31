@@ -46,15 +46,14 @@ public class FileRenderer extends TextRenderer {
     // Constants ----------------------------------------------------------------------------------
 
     private static final Attribute[] INPUT_ATTRIBUTES =
-        AttributeManager.getAttributes(AttributeManager.Key.INPUTTEXT);
+            AttributeManager.getAttributes(AttributeManager.Key.INPUTTEXT);
 
     // Actions ------------------------------------------------------------------------------------
 
     @Override
     protected void getEndTextToRender
-        (FacesContext context, UIComponent component, String currentValue)
-            throws IOException
-    {
+            (FacesContext context, UIComponent component, String currentValue)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("input", component);
         writeIdAttributeIfNecessary(context, writer, component);
@@ -69,7 +68,7 @@ public class FileRenderer extends TextRenderer {
 
         // Render standard HTMLattributes expect of styleClass.
         RenderKitUtils.renderPassThruAttributes(
-            context, writer, component, INPUT_ATTRIBUTES, getNonOnChangeBehaviors(component));
+                context, writer, component, INPUT_ATTRIBUTES, getNonOnChangeBehaviors(component));
         RenderKitUtils.renderXHTMLStyleBooleanAttributes(writer, component);
         RenderKitUtils.renderOnchange(context, component, false);
 
@@ -87,15 +86,17 @@ public class FileRenderer extends TextRenderer {
             clientId = component.getClientId(context);
         }
         File file = ((MultipartRequest) context.getExternalContext().getRequest()).getFile(clientId);
-        if (file != null) {
-            ((UIInput) component).setSubmittedValue(file);
-        }
+
+        // If no file is specified, set empty String to trigger required="true" validator. JSF will
+        // set it back to null afterwards. Although, that is the default, it's configureable by the
+        // context init-param javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL
+        Object submittedValue = (file != null) ? file : "";
+        ((UIInput) component).setSubmittedValue(submittedValue);
     }
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
-        throws ConverterException
-    {
+            throws ConverterException {
         // No need to convert File to String as the bean property ought be File as well.
         return submittedValue;
     }

@@ -157,7 +157,8 @@ public class MultipartMap extends HashMap<String, Object> {
     public String getParameter(String name) {
         Object value = super.get(name);
         if (value instanceof File) {
-            throw new IllegalArgumentException("This is a File field. Use #getFile() instead.");
+		return value.toString();
+//	    throw new IllegalArgumentException("This is a File field. Use #getFile() instead.");
         }
         String[] values = (String[]) value;
         return values != null ? values[0] : null;
@@ -170,7 +171,8 @@ public class MultipartMap extends HashMap<String, Object> {
     public String[] getParameterValues(String name) {
         Object value = super.get(name);
         if (value instanceof File) {
-            throw new IllegalArgumentException("This is a File field. Use #getFile() instead.");
+		return new String[] { value.toString() } ;
+//	    throw new IllegalArgumentException("This is a File field. Use #getFile() instead.");
         }
         return (String[]) value;
     }
@@ -230,7 +232,8 @@ public class MultipartMap extends HashMap<String, Object> {
      * Returns the text value of the given part.
      */
     private String getValue(Part part) throws IOException {
-        return new BufferedReader(new InputStreamReader(part.getInputStream(), encoding)).readLine();
+        String value = new BufferedReader(new InputStreamReader(part.getInputStream(), encoding)).readLine();
+        return (value != null) ? value : ""; // Must be empty string according HTTP spec.
     }
 
     /**
